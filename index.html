@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI vs AGI — Concepts, History, Capabilities, Ethics, and Futures</title>
+
+  <!-- Meta description and social preview -->
+  <meta name="description" content="A comprehensive, educational deep-dive into Artificial Intelligence (AI) and Artificial General Intelligence (AGI). Explore history, techniques, comparisons, ethics, risks, and futures." />
+  <meta property="og:title" content="AI vs AGI — Concepts, History, Capabilities, Ethics, and Futures" />
+  <meta property="og:description" content="A comprehensive, educational deep-dive into AI and AGI." />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --surface: #111826;
+      --surface-2: #0f1621;
+      --text: #eaf0ff;
+      --muted: #a8b1c7;
+      --accent: #7c9eff;
+      --accent-2: #12d6df;
+      --code: #e2f1ff;
+      --warning: #f2c14e;
+      --danger: #ff6b6b;
+      --success: #36d399;
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header.hero {
+      position: relative;
+      padding: 80px 24px 60px;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(124,158,255,0.18), transparent 60%),
+        radial-gradient(900px 600px at 80% 0%, rgba(18,214,223,0.15), transparent 60%),
+        linear-gradient(180deg, var(--surface-2), var(--bg) 75%);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 32px; align-items: center;
+    }
+    @media (max-width: 980px) { .hero-grid { grid-template-columns: 1fr; } }
+
+    h1 {
+      font-weight: 800; font-size: 52px; margin: 0 0 12px;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #eaf0ff, #89a9ff 50%, #12d6df);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle { font-size: 18px; color: var(--muted); max-width: 680px; }
+
+    .hero-actions { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 18px; border-radius: 12px;
+      font-weight: 600; border: 1px solid var(--border);
+      background: linear-gradient(180deg, #172234, #101826);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); border-color: rgba(124,158,255,0.35); }
+    .btn.primary {
+      background: linear-gradient(180deg, #273b65, #131b2b);
+      border-color: rgba(124,158,255,0.45);
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 1px dashed var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-right: 8px;
+    }
+
+    section {
+      padding: 48px 24px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.02) 50%, transparent);
+    }
+
+    h2 {
+      font-size: 28px; margin: 0 0 16px; font-weight: 800; letter-spacing: -0.01em;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 980px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .card h3 { margin: 0 0 8px; font-size: 20px; font-weight: 700; }
+    .muted { color: var(--muted); }
+
+    .table-wrap {
+      overflow: auto; border: 1px solid var(--border); border-radius: 14px;
+      background: var(--surface); box-shadow: var(--shadow);
+    }
+    table {
+      width: 100%; border-collapse: collapse;
+      min-width: 700px; color: var(--text);
+    }
+    th, td {
+      padding: 14px 16px; border-bottom: 1px solid var(--border);
+      text-align: left; vertical-align: top;
+    }
+    th {
+      background: linear-gradient(0deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      font-weight: 700;
+    }
+    tr:hover td { background: rgba(255,255,255,0.015); }
+
+    .kbd { font-family: JetBrains Mono, monospace; font-size: 13px; background: #0c1220; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--border); color: var(--code); }
+
+    .note {
+      padding: 12px 14px; border-left: 3px solid var(--accent);
+      background: linear-gradient(90deg, rgba(124,158,255,0.08), transparent);
+      border-radius: 8px;
+    }
+
+    .status { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px; font-size: 13px; }
+    .status.success { background: rgba(54,211,153,0.12); color: #a9f2d6; border: 1px solid rgba(54,211,153,0.35); }
+    .status.warn    { background: rgba(242,193,78,0.12); color: #ffe7a9; border: 1px solid rgba(242,193,78,0.35); }
+    .status.danger  { background: rgba(255,107,107,0.12); color: #ffb8b8; border: 1px solid rgba(255,107,107,0.35); }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: ""; position: absolute; left: 12px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(180deg, var(--accent), transparent 80%);
+    }
+    .t-item { position: relative; margin: 18px 0; }
+    .t-item::before {
+      content: ""; position: absolute; left: -6px; top: 6px;
+      width: 14px; height: 14px; border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--accent) 60%);
+      border: 2px solid rgba(255,255,255,0.15);
+      box-shadow: 0 0 12px rgba(124,158,255,0.6);
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 24px; text-align: center; color: var(--muted);
+      background:
+        radial-gradient(900px 500px at 80% 120%, rgba(124,158,255,0.12), transparent 60%),
+        linear-gradient(180deg, var(--bg), #0a0f16);
+    }
+    .tag { display: inline-block; margin: 6px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); }
+
+    /* Responsive helper */
+    .stack { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <header class="hero" aria-label="AI and AGI overview banner">
+    <div class="container hero-grid">
+      <div>
+        <h1>Artificial Intelligence vs Artificial General Intelligence</h1>
+        <p class="subtitle">
+          Explore the foundations, milestones, methods, comparisons, risks, and future scenarios of AI and AGI.
+          This guide is designed for learners, builders, and decision‑makers who want clarity and substance.
+        </p>
+        <div class="hero-actions">
+          <a href="#definitions" class="btn primary" aria-label="Jump to definitions">Start with definitions</a>
+          <a href="#comparison" class="btn" aria-label="Jump to comparison table">Compare AI vs AGI</a>
+          <a href="#ethics" class="btn" aria-label="Jump to ethics">Ethics & safety</a>
+          <a href="#futures" class="btn" aria-label="Jump to futures">Possible futures</a>
+        </div>
+        <div style="margin-top: 18px;">
+          <span class="chip">Beginner friendly</span>
+          <span class="chip">Technical depth</span>
+          <span class="chip">Policy aware</span>
+        </div>
+      </div>
+
+      <!-- Decorative SVG: Knowledge Net -->
+      <div class="card" aria-hidden="true">
+        <svg viewBox="0 0 640 380" width="100%" height="100%" style="display:block; border-radius:12px; background:#0c1220;">
+          <defs>
+            <radialGradient id="grad" cx="50%" cy="50%" r="65%">
+              <stop offset="0%" stop-color="#89a9ff" />
+              <stop offset="50%" stop-color="#12d6df" />
+              <stop offset="100%" stop-color="#0c1220" />
+            </radialGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2.5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- Nodes -->
+          <g fill="url(#grad)" filter="url(#glow)" opacity="0.85">
+            <circle cx="80" cy="300" r="6"/>
+            <circle cx="130" cy="260" r="8"/>
+            <circle cx="170" cy="210" r="5"/>
+            <circle cx="220" cy="240" r="9"/>
+            <circle cx="260" cy="180" r="7"/>
+            <circle cx="320" cy="200" r="10"/>
+            <circle cx="380" cy="160" r="7"/>
+            <circle cx="430" cy="220" r="8"/>
+            <circle cx="480" cy="170" r="6"/>
+            <circle cx="530" cy="230" r="9"/>
+            <circle cx="580" cy="190" r="7"/>
+          </g>
+
+          <!-- Edges -->
+          <g stroke="#7c9eff" stroke-opacity="0.5">
+            <line x1="130" y1="260" x2="170" y2="210"/>
+            <line x1="170" y1="210" x2="220" y2="240"/>
+            <line x1="220" y1="240" x2="260" y2="180"/>
+            <line x1="260" y1="180" x2="320" y2="200"/>
+            <line x1="320" y1="200" x2="380" y2="160"/>
+            <line x1="380" y1="160" x2="430" y2="220"/>
+            <line x1="430" y1="220" x2="480" y2="170"/>
+            <line x1="480" y1="170" x2="530" y2="230"/>
+            <line x1="530" y1="230" x2="580" y2="190"/>
+          </g>
+
+          <!-- Title -->
+          <text x="24" y="40" fill="#eaf0ff" font-size="22" font-family="Inter">Knowledge network: narrow AI clusters vs general connections</text>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- Definitions -->
+  <section id="definitions" aria-labelledby="definitions-title">
+    <div class="container">
+      <h2 id="definitions-title">Definitions and scope</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Artificial Intelligence (AI)</h3>
+          <p class="muted">
+            Systems designed to perform specific tasks that typically require human intelligence: perception, pattern recognition,
+            language understanding, decision‑making, optimization, and control. Most production AI today is “narrow”—it excels in
+            constrained domains like translation, recommendation, search ranking, fraud detection, vision, and code assistance.
+          </p>
+          <div class="note">
+            <strong>Examples:</strong> speech recognition, image classification, route planning, spam filters, personalized feeds, copilots for coding.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Artificial General Intelligence (AGI)</h3>
+          <p class="muted">
+            A hypothetical or emerging class of systems with human‑level (or beyond) capability across a wide range of tasks.
+            AGI would demonstrate robust generalization, transfer learning, autonomy, and adaptable reasoning in novel situations
+            without extensive task‑specific retraining.
+          </p>
+          <div class="note">
+            <strong>Key traits:</strong> general problem‑solving, cross‑domain learning, reliable planning under uncertainty, value alignment, and situational awareness.
+          </div>
+        </div>
+      </div>
+      <div class="stack" style="margin-top: 12px;">
+        <span class="status success">AI: proven, widely deployed</span>
+        <span class="status warn">AGI: debated, evolving</span>
+        <span class="status danger">Alignment & safety: critical</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Milestones & history -->
+  <section id="history" aria-labelledby="history-title">
+    <div class="container">
+      <h2 id="history-title">Milestones and historical contexts</h2>
+      <div class="timeline">
+        <div class="t-item">
+          <strong>Early foundations:</strong> logic, automata theory, cybernetics, statistical learning, and the Turing test shaped the conceptual basis for machine intelligence.
+        </div>
+        <div class="t-item">
+          <strong>Symbolic era:</strong> rule‑based systems and expert systems showed strong performance in well‑structured domains but struggled with uncertainty and perception.
+        </div>
+        <div class="t-item">
+          <strong>Machine learning:</strong> statistical methods and kernel machines advanced pattern recognition; “features first” dominated many pipelines.
+        </div>
+        <div class="t-item">
+          <strong>Deep learning:</strong> neural networks scaled with data, compute, and architectures; breakthroughs in vision, speech, language, and game playing.
+        </div>
+        <div class="t-item">
+          <strong>Foundation models:</strong> large models trained on diverse data demonstrated emergent capabilities, transfer, and versatile interfaces (text, image, audio).
+        </div>
+        <div class="t-item">
+          <strong>Tool‑use & agents:</strong> models orchestrate tools, memory, and planning loops to perform multi‑step tasks with feedback and self‑correction.
+        </div>
+      </div>
+      <p class="muted">Each wave improved robustness and scope, yet opened new questions about control, bias, transparency, and governance.</p>
+    </div>
+  </section>
+
+  <!-- Techniques -->
+  <section id="techniques" aria-labelledby="techniques-title">
+    <div class="container">
+      <h2 id="techniques-title">Techniques and building blocks</h2>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>Learning paradigms</h3>
+          <ul>
+            <li><span class="kbd">Supervised</span>: labeled data maps inputs to targets.</li>
+            <li><span class="kbd">Self‑supervised</span>: predict masked parts of data, learn representations.</li>
+            <li><span class="kbd">Unsupervised</span>: discover structure without labels.</li>
+            <li><span class="kbd">Reinforcement</span>: optimize actions via reward signals.</li>
+            <li><span class="kbd">Hybrid</span>: combine paradigms with tool‑use and feedback.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Model families</h3>
+          <ul>
+            <li><span class="kbd">CNNs</span> for spatial perception.</li>
+            <li><span class="kbd">RNNs/LSTMs</span> for sequences.</li>
+            <li><span class="kbd">Transformers</span> for attention and scaling.</li>
+            <li><span class="kbd">Graph networks</span> for relational reasoning.</li>
+            <li><span class="kbd">Diffusion & VAEs</span> for generative modeling.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Systems & agents</h3>
+          <ul>
+            <li><span class="kbd">Retrieval</span> to ground answers in external knowledge.</li>
+            <li><span class="kbd">Planning</span> with search and decision processes.</li>
+            <li><span class="kbd">Tool‑use</span> for code execution, browsing, or device control.</li>
+            <li><span class="kbd">Memory</span> for persistence across tasks.</li>
+            <li><span class="kbd">Evaluation</span> via benchmarks and adversarial tests.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 18px;">
+        <h3>From narrow competence to generality</h3>
+        <p class="muted">
+          Generalization improves with diverse data, curriculum design, multi‑modal inputs, interactive learning, and robust evaluation.
+          Scalable infrastructure (distributed training and inference), safety monitoring, and interpretability help ensure reliability
+          as capabilities broaden beyond single tasks.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison table -->
+  <section id="comparison" aria-labelledby="comparison-title">
+    <div class="container">
+      <h2 id="comparison-title">AI vs AGI: comparison</h2>
+      <div class="table-wrap">
+        <table aria-label="Comparison between AI and AGI">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>AI (Narrow)</th>
+              <th>AGI (General)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Scope</td>
+              <td>Task‑specific, optimized for one domain.</td>
+              <td>Cross‑domain, adaptable to new tasks.</td>
+            </tr>
+            <tr>
+              <td>Learning</td>
+              <td>Primarily supervised or fine‑tuned for a target.</td>
+              <td>Self‑directed learning, transfer, meta‑learning.</td>
+            </tr>
+            <tr>
+              <td>Reasoning</td>
+              <td>Pattern‑centric; limited long‑horizon planning.</td>
+              <td>Structured, causal, and long‑horizon planning.</td>
+            </tr>
+            <tr>
+              <td>Robustness</td>
+              <td>Strong in known distributions; brittle OOD.</td>
+              <td>Resilient to novel distributions and goals.</td>
+            </tr>
+            <tr>
+              <td>Autonomy</td>
+              <td>Human‑in‑the‑loop for most complex tasks.</td>
+              <td>Goal pursuit with minimal supervision.</td>
+            </tr>
+            <tr>
+              <td>Alignment</td>
+              <td>Local safeguards per application.</td>
+              <td>Global value alignment and corrigibility.</td>
+            </tr>
+            <tr>
+              <td>Interpretability</td>
+              <td>Often limited; post‑hoc analysis.</td>
+              <td>Integrated transparency and accountability.</td>
+            </tr>
+            <tr>
+              <td>Societal impact</td>
+              <td>Productivity gains, targeted automation.</td>
+              <td>Systemic transformation across sectors.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top: 12px;">
+        <strong>Takeaway:</strong> AGI is not just “more AI”—it implies general competence, transfer, autonomy, and governance challenges well beyond today’s narrow systems.
+      </div>
+    </div>
+  </section>
+
+  <!-- Ethics & risks -->
+  <section id="ethics" aria-labelledby="ethics-title">
+    <div class="container">
+      <h2 id="ethics-title">Ethics, safety, and governance</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Core concerns</h3>
+          <ul>
+            <li><strong>Bias & fairness:</strong> prevent discriminatory outcomes.</li>
+            <li><strong>Privacy:</strong> respect data rights and minimize leakage.</li>
+            <li><strong>Security:</strong> defend against adversarial misuse.</li>
+            <li><strong>Misinformation:</strong> reduce synthesis of deceptive media.</li>
+            <li><strong>Accountability:</strong> clarify responsibility and redress.</li>
+            <li><strong>Alignment:</strong> ensure goals remain beneficial to humans.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Good practices</h3>
+          <ul>
+            <li><strong>Data governance:</strong> consent, curation, and documentation.</li>
+            <li><strong>Safety evaluations:</strong> red‑teaming, audits, and monitoring.</li>
+            <li><strong>Human oversight:</strong> review critical decisions.</li>
+            <li><strong>Transparency:</strong> communicate limitations and risks.</li>
+            <li><strong>Rate‑limiting & gates:</strong> constrain high‑risk capabilities.</li>
+            <li><strong>Incident response:</strong> track and mitigate harm quickly.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 18px;">
+        <h3>Alignment at AGI scale</h3>
+        <p class="muted">
+          As capabilities grow, safeguards must evolve: value learning, corrigibility, constitutional or rule‑guided training,
+          interpretability research, and multi‑stakeholder governance. Testing in realistic, adversarial settings is crucial to
+          ensure behavior remains reliable under distribution shift and incentive pressure.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Applications -->
+  <section id="applications" aria-labelledby="applications-title">
+    <div class="container">
+      <h2 id="applications-title">Applications and sectors</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Science & engineering</h3>
+          <ul>
+            <li><strong>Discovery:</strong> materials, drugs, catalysts.</li>
+            <li><strong>Simulation:</strong> climate, fluid dynamics, genomics.</li>
+            <li><strong>Optimization:</strong> energy grids, logistics, routing.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Knowledge & creative work</h3>
+          <ul>
+            <li><strong>Assistants:</strong> drafting, research synthesis.</li>
+            <li><strong>Media:</strong> design, audio, video co‑creation.</li>
+            <li><strong>Education:</strong> tutoring and personalized curricula.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Operations & autonomy</h3>
+          <ul>
+            <li><strong>Robotics:</strong> manufacturing, agriculture.</li>
+            <li><strong>Navigation:</strong> drones, vehicles, fleets.</li>
+            <li><strong>Monitoring:</strong> safety, compliance, anomaly detection.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted" style="margin-top: 12px;">
+        AGI would amplify these areas through robust transfer, dynamic planning, and human‑aligned decision support across complex environments.
+      </p>
+    </div>
+  </section>
+
+  <!-- Futures -->
+  <section id="futures" aria-labelledby="futures-title">
+    <div class="container">
+      <h2 id="futures-title">Possible futures and scenarios</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Optimistic trajectories</h3>
+          <ul>
+            <li><strong>Prosperity:</strong> productivity gains and new industries.</li>
+            <li><strong>Health:</strong> precision medicine and accelerated trials.</li>
+            <li><strong>Education:</strong> individualized learning at scale.</li>
+            <li><strong>Environment:</strong> smarter resource usage and mitigation.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Risk‑aware trajectories</h3>
+          <ul>
+            <li><strong>Misuse:</strong> scalable fraud or manipulation.</li>
+            <li><strong>Concentration:</strong> power centralization and lock‑in.</li>
+            <li><strong>Displacement:</strong> labor transitions without support.</li>
+            <li><strong>Misalignment:</strong> goal divergence or reward hacking.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note" style="margin-top: 18px;">
+        <strong>Policy implication:</strong> broad benefits require strong guardrails, international cooperation, and incentives for safe innovation.
+      </div>
+    </div>
+  </section>
+
+  <!-- Frequently asked questions -->
+  <section id="faq" aria-labelledby="faq-title">
+    <div class="container">
+      <h2 id="faq-title">Frequently asked questions</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Is AGI inevitable?</h3>
+          <p class="muted">
+            Not guaranteed. AGI depends on scientific breakthroughs, sustained resources, and rigorous safety alignment. The timeline
+            and feasibility remain actively debated; prudent planning assumes continued capability growth while preparing robust safeguards.
+          </p>
+        </div>
+        <div class="card">
+          <h3>How is AI evaluated?</h3>
+          <p class="muted">
+            Through benchmarks (accuracy, robustness, fairness), adversarial tests, real‑world pilots, and outcome monitoring.
+            For emerging general systems, evaluations must include transfer, reasoning, tool‑use, and behavior under uncertainty.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Will AGI replace human jobs?</h3>
+          <p class="muted">
+            Roles will change. Some tasks automate; others expand with AI augmentation. Societies can shape transitions via education,
+            safety nets, entrepreneurship pathways, and policies that reward human‑AI collaboration over pure substitution.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Is bigger always better?</h3>
+          <p class="muted">
+            Scaling helps, but quality data, architecture, safety, interpretability, and system design matter. Practical value comes
+            from aligning capabilities with human goals and constraints, not raw model size alone.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Getting started -->
+  <section id="learn" aria-labelledby="learn-title">
+    <div class="container">
+      <h2 id="learn-title">Learning roadmap</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Foundations</h3>
+          <ul>
+            <li><strong>Math:</strong> linear algebra, calculus, probability.</li>
+            <li><strong>CS:</strong> algorithms, data structures, complexity.</li>
+            <li><strong>ML basics:</strong> bias‑variance, regularization, evaluation.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Practice</h3>
+          <ul>
+            <li><strong>Projects:</strong> classification, generation, retrieval.</li>
+            <li><strong>Pipelines:</strong> data curation, training, deployment.</li>
+            <li><strong>Safety:</strong> red‑team, monitoring, guardrails.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Depth</h3>
+          <ul>
+            <li><strong>Architectures:</strong> attention, recurrence, diffusion.</li>
+            <li><strong>Systems:</strong> agents, memory, tool‑use.</li>
+            <li><strong>Policy:</strong> ethics, governance, standards.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted" style="margin-top: 12px;">
+        Combine theory with hands‑on builds and reflective safety practice. Treat deployment as a socio‑technical challenge.
+      </p>
+    </div>
+  </section>
+
+  <!-- Code sample (toy) -->
+  <section id="code" aria-labelledby="code-title">
+    <div class="container">
+      <h2 id="code-title">Tiny illustrative code sample</h2>
+      <div class="card">
+        <h3>Concept: Retrieval‑augmented question answering (RAQA)</h3>
+        <p class="muted">This pseudo‑JS snippet shows the flow of grounding answers in external knowledge.</p>
+        <pre class="kbd" aria-label="Code block">
+// Pseudo-code: minimal retrieval + generation pipeline
+async function answerQuestion(query) {
+  const docs = await vectorDB.search(query, { k: 5 });
+  const context = summarize(docs); // reduce redundancy
+  const prompt = `
+You are a cautious assistant.
+Use the context to answer precisely.
+If uncertain, ask for clarification.
+
+Context:
+${context}
+
+Question:
+${query}
+`;
+  const draft = await model.generate(prompt);
+  const checked = await safety.review(draft, { rules: ["no personal data", "no harmful advice"] });
+  return checked.ok ? checked.output : "I can't answer that. Can you rephrase or provide more context?";
+}
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Glossary -->
+  <section id="glossary" aria-labelledby="glossary-title">
+    <div class="container">
+      <h2 id="glossary-title">Glossary</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Alignment</h3>
+          <p class="muted">Ensuring AI goals and actions reflect human values and remain corrigible under change.</p>
+        </div>
+        <div class="card">
+          <h3>Generalization</h3>
+          <p class="muted">Performance on novel data differing from the training distribution.</p>
+        </div>
+        <div class="card">
+          <h3>Transfer learning</h3>
+          <p class="muted">Leveraging knowledge from one task or domain to improve performance in another.</p>
+        </div>
+        <div class="card">
+          <h3>Corrigibility</h3>
+          <p class="muted">Ability to accept updates, oversight, and interventions without resisting correction.</p>
+        </div>
+        <div class="card">
+          <h3>Benchmark</h3>
+          <p class="muted">A standardized test suite to measure specific capabilities and robustness.</p>
+        </div>
+        <div class="card">
+          <h3>Out‑of‑distribution (OOD)</h3>
+          <p class="muted">Data or scenarios significantly different from training, often revealing brittleness.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>AI vs AGI — an educational overview for builders, learners, and policymakers.</p>
+      <div>
+        <span class="tag">Ethics</span>
+        <span class="tag">Safety</span>
+        <span class="tag">Systems</span>
+        <span class="tag">Learning</span>
+        <span class="tag">Governance</span>
+      </div>
+      <p style="margin-top: 10px;">Made to be clear, thoughtful, and practical.</p>
+    </div>
+  </footer>
+
+  <!-- Minimal JS: smooth active link highlight -->
+  <script>
+    const links = document.querySelectorAll('.hero-actions a');
+    window.addEventListener('scroll', () => {
+      const fromTop = window.scrollY + 100;
+      const sections = [...document.querySelectorAll('section')];
+      let activeId = null;
+      for (const sec of sections) {
+        const rect = sec.getBoundingClientRect();
+        const top = rect.top + window.scrollY;
+        const bottom = top + sec.offsetHeight;
+        if (fromTop >= top && fromTop < bottom) { activeId = sec.id; break; }
+      }
+      links.forEach(link => {
+        const href = link.getAttribute('href').slice(1);
+        link.style.borderColor = (href === activeId) ? 'rgba(124,158,255,0.45)' : 'var(--border)';
+      });
+    }, { passive: true });
+  </script>
+</body>
+</html>
